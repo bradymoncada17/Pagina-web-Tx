@@ -20,3 +20,4 @@
   },
   "include": ["vite.config.ts"]
 }
+/*cambios realizados en el tsconfig.node.json para configurar el entorno de desarrollo y compilación de TypeScript para el proyecto toxcity-web. Este archivo especifica las opciones del compilador TypeScript, como el objetivo de JavaScript, las bibliotecas a incluir, la resolución de módulos y las reglas de linting. Además, se indica que se deben incluir los archivos de configuración de Vite para el desarrollo y la construcción del proyecto.*/
