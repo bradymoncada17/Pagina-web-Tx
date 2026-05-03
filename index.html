@@ -756,14 +756,21 @@
         @media (max-width: 768px) {
             .hero-content h1 {
                 font-size: 2.5rem;
+                margin-bottom: 0.5rem;
             }
 
             .hero-content p {
                 font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-content {
+                padding: 2rem 1rem;
             }
 
             .section-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
             }
 
             .navbar-brand {
@@ -771,7 +778,7 @@
             }
 
             .nav-link {
-                margin: 0 0.5rem;
+                margin: 0.3rem 0.5rem;
                 font-size: 0.85rem;
             }
 
@@ -781,6 +788,55 @@
                 font-size: 1.5rem;
                 bottom: 1.5rem;
                 right: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .btn-premium {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            .ventaja-card, .producto-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .contacto-section {
+                padding: 2rem 1rem;
+            }
+
+            .footer-section {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .nav-link {
+                font-size: 0.75rem;
+                margin: 0.2rem 0.3rem;
+            }
+
+            .btn-premium {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -807,7 +863,7 @@
 
     <!-- HERO SECTION -->
     <section class="hero" id="inicio">
-        <video class="hero-video" autoplay muted loop playsinline>
+        <video class="hero-video" muted loop playsinline id="heroVideo">
             <source src="video-nino.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
@@ -935,7 +991,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="producto-card">
                         <div class="producto-img-container">
-                            <video class="producto-img" autoplay muted loop controls loading="lazy">
+                            <video class="producto-img" muted loop controls loading="lazy" class="productVideo">
                                 <source src="video-premium.mp4" type="video/mp4">
                             </video>
                             <div class="producto-overlay">
@@ -953,7 +1009,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="producto-card">
                         <div class="producto-img-container">
-                            <video class="producto-img" autoplay muted loop controls loading="lazy">
+                            <video class="producto-img" muted loop controls loading="lazy" class="productVideo">
                                 <source src="video-nino.mp4" type="video/mp4">
                             </video>
                             <div class="producto-overlay">
@@ -1216,6 +1272,44 @@ Quedo atento a la confirmación de la cita.`;
         document.querySelectorAll('.ventaja-card, .producto-card').forEach(el => {
             observer.observe(el);
         });
+
+        // Control de autoplay en videos segun dispositivo
+        function setupVideoAutoplay() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const heroVideo = document.getElementById('heroVideo');
+            const productVideos = document.querySelectorAll('.productVideo');
+
+            if (!isMobile) {
+                // Desktop: activar autoplay
+                if (heroVideo) {
+                    heroVideo.autoplay = true;
+                    heroVideo.play().catch(err => console.log('Autoplay bloqueado:', err));
+                }
+                productVideos.forEach(video => {
+                    video.autoplay = true;
+                    video.play().catch(err => console.log('Autoplay bloqueado:', err));
+                });
+            } else {
+                // Mobile: no autoplay, solo play on tap
+                productVideos.forEach(video => {
+                    video.autoplay = false;
+                    video.addEventListener('click', function() {
+                        if (this.paused) {
+                            this.play();
+                        } else {
+                            this.pause();
+                        }
+                    });
+                });
+            }
+        }
+
+        // Ejecutar cuando el DOM este listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupVideoAutoplay);
+        } else {
+            setupVideoAutoplay();
+        }
     </script>
 </body>
 </html>
